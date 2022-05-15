@@ -18,8 +18,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { mypost } from '../request'
-import store from '@/store'
 import { Iloginres } from '@/type'
+import router from '@/router'
 
 export const loginEffect = (account: string, password: string) => {
   // 点击登录
@@ -45,7 +45,8 @@ export const loginEffect = (account: string, password: string) => {
   function loginthen (res: Iloginres) {
     const token = res.token
     localStorage.setItem('token', token)
-    store.dispatch('getHomeInfo')
+    // 有token后就可以跳转到首页，首页再发送请求获取页面信息
+    router.push({ name: 'home' })
   }
   return { clickLogin }
 }

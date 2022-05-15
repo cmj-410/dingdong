@@ -19,6 +19,7 @@ const router = createRouter({
   routes
 })
 
+// 路由登录判定
 router.beforeEach(to => {
   const islogin = !!localStorage.getItem('token')
   if (!islogin && to.name !== 'login') {
