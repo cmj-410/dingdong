@@ -1,0 +1,16 @@
+const baseurl = 'http://127.0.0.1:4523/mock/965479/api'
+
+export async function mypost (address: string, bodymsg: object) {
+  const url = baseurl + address
+  const response = await fetch(url, {
+    method: 'post',
+    body: bodymsg as BodyInit
+  })
+  return response
+}
+
+export async function myget (address: string) {
+  const url = baseurl + address
+  const response = await fetch(url)
+  return response
+}
