@@ -1,24 +1,26 @@
 <template>
   <div class="wrapper">
-      <img :src="shopInfo.imageUrl" class="leftimg">
+      <img src="" class="leftimg">
       <div class="content">
-        <h3>{{shopInfo.name}}</h3>
+        <h3>{{itemInduction.productName}}</h3>
+        <div class="slogan"><span>{{itemInduction.slogan}}</span></div>
+        <div>{{itemInduction.productDescription}}</div>
         <div class="content__middle">
-          <span>销量{{shopInfo.sales}}</span>
-          <span>起送￥{{shopInfo.expressLimit}}</span>
-          <span>配送￥{{shopInfo.expressPrice}}</span>
+          <span>月售{{itemInduction.sales}}</span>
+          <span>好评{{itemInduction.favorableRate}}</span>
         </div>
-        <div class="slogan"><span>{{shopInfo.slogan}}</span></div>
+        <div>
+          {{itemInduction.price}}
+        </div>
       </div>
     </div>
 </template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'homeShop',
-  props: ['shopInfo']
+  name: 'shopInduction',
+  props: ['itemInduction']
   // setup() {
   // },
 })
@@ -41,6 +43,9 @@ export default defineComponent({
     height: 1rem;
     padding: 0.03rem;
     box-sizing: border-box;
+    h3{
+      margin: 0.05rem 0;
+    }
     &__middle{
       display: flex;
       span{
@@ -50,10 +55,9 @@ export default defineComponent({
     }
   }
   .slogan{
-    margin-top: 0.1rem;
-    font: 0.12rem red;
+    font: 0.12rem;
+    color: gold;
     span{
-      background-color: lightpink;
       border-radius: 10%;
     }
   }

@@ -50,6 +50,9 @@ export default defineComponent({
   }
   .inputfind{
     display: flex;
+    position: sticky;
+    top: 0;
+    background: white;
     input{
       flex: 1;
       height: 0.24rem;
