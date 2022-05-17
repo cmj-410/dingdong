@@ -11,14 +11,20 @@
     <div class="downBackground"></div>
     <div class="shopProduct">
       <div class="contexMenu">
-        <template v-for="item in shopMenu" :key="item">
-          <div class="contexMenu__item">{{item}}</div>
+        <template v-for="(item, ind) of shopMenu" :key="item">
+          <div class="contexMenu__item"
+          @click="chooseMenu(ind)" :class = '{activated: selectedOrder === ind}'
+          >{{item}}</div>
         </template>
       </div>
       <div class="productInfo">
-        <shopTotalInduction :productIntro = 'shopProInfo[0]'/>
+        <shopTotalInduction :productIntro = 'shopProInfo[selectedOrder]' />
       </div>
     </div>
+    <div class="bottom_settlemet">
+      <shopViewCart :isOpen = 'isOpen'/>
+    </div>
+    <br/><br/><br/>
   </div>
 </template>
 
@@ -27,6 +33,7 @@ import { myget } from '@/request'
 import { defineComponent, ref } from 'vue'
 import homeShop from '../Home/HomeShopView.vue'
 import shopTotalInduction from './ShopTotalInductionView.vue'
+import shopViewCart from './ShopViewCartView.vue'
 
 // 获取具体店铺的信息
 const getShopInfoEffect = () => {
@@ -56,10 +63,22 @@ const getShopInfoEffect = () => {
 
 export default defineComponent({
   name: 'shopView',
-  components: { homeShop, shopTotalInduction },
+  components: { homeShop, shopTotalInduction, shopViewCart },
   setup () {
     const { shopInfor, shopMenu, shopProInfo } = getShopInfoEffect()
-    return { shopInfor, shopMenu, shopProInfo }
+    const selectedOrder = ref(0)
+    const chooseMenu = (ind: number) => {
+      selectedOrder.value = ind
+    }
+    const isOpen = ref(true)
+    return {
+      shopInfor,
+      shopMenu,
+      shopProInfo,
+      selectedOrder,
+      chooseMenu,
+      isOpen
+    }
   }
 })
 </script>
@@ -105,7 +124,7 @@ export default defineComponent({
   .shopProduct{
     display: flex;
     flex-direction: row;
-    background: #ccc;
+    background: #ddd;
     .contexMenu{
       width: 0.6rem;
       height: 100%;
@@ -113,7 +132,6 @@ export default defineComponent({
         height: 0.3rem;
         line-height: 0.3rem;
         text-align: center;
-        border: solid 1px;
         box-sizing: border-box;
       }
     }
@@ -122,5 +140,13 @@ export default defineComponent({
       background: white;
     }
   }
+  .bottom_settlemet{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+}
+.activated{
+  background: lightblue;
 }
 </style>
