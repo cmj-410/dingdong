@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="bottom_settlemet">
-      <shopViewCart :isOpen = 'isOpen'/>
+      <shopViewCart/>
     </div>
     <br/><br/><br/>
   </div>
@@ -70,14 +70,12 @@ export default defineComponent({
     const chooseMenu = (ind: number) => {
       selectedOrder.value = ind
     }
-    const isOpen = ref(true)
     return {
       shopInfor,
       shopMenu,
       shopProInfo,
       selectedOrder,
-      chooseMenu,
-      isOpen
+      chooseMenu
     }
   }
 })

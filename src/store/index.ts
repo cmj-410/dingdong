@@ -35,8 +35,6 @@ const computeCost = (state: {sumCost: number, sumNumber: number}, cartList: {num
   })
   state.sumCost = sum
   state.sumNumber = count
-  console.log(state.sumCost)
-  console.log(state.sumNumber)
   // 本地存储，mock的原因，数据不好看，先关掉了
   // localStorage.sumCost = sum
   // localStorage.sumNumber = count
