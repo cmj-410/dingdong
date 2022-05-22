@@ -1,70 +1,50 @@
 <template>
   <div class="wrapper">
-    <img :src="itemInduction.imgUrl" class="leftimg">
+    <img :src="itemIntro.imgUrl" class="leftimg">
     <div class="content">
-      <h3>{{itemInduction.productName}}</h3>
-      <div class="content__slogan"><span>{{itemInduction.slogan}}</span></div>
-      <div class="content__description">{{itemInduction.productDescription}}</div>
+      <h3>{{itemIntro.productName}}</h3>
+      <div class="content__slogan"><span>{{itemIntro.slogan}}</span></div>
+      <div class="content__description">{{itemIntro.productDescription}}</div>
       <div class="content__middle">
-        <span>月售 {{itemInduction.sales}}</span>
-        <span>好评 {{itemInduction.favorableRate}}%</span>
+        <span>月售 {{itemIntro.sales}}</span>
+        <span>好评 {{itemIntro.favorableRate}}%</span>
       </div>
       <div class="content__innerWrapper">
-        <span class="price">￥{{itemInduction.price}}</span>
+        <span class="price">￥{{itemIntro.price}}</span>
         <div class="right">
-          <button @click="minus()">-</button>
-          <span class="count">{{count}}</span>
-          <button @click="plus()">+</button>
+          <button @click="changeCartProductNum(-1)">-</button>
+          <span class="count">{{cartList?.[shopId]?.[itemIntro.productId]?.number ?? 0}}</span>
+          <button @click="changeCartProductNum(1)">+</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
+import { defineComponent, toRefs } from 'vue'
 import mystore from '@/store'
-import { defineComponent, ref } from 'vue'
-
-// 将商品信息发送到vuex的实现,不包括数量
-// productId productName price imgUrl
-const sendCommodity = (commodity: any) => {
-  const { productId, productName, price, imgUrl } = commodity.value
-  const msg = { productId, productName, price, imgUrl }
-  return msg
-}
-
-// 发送商品的所有信息，包括数量
-// count
-const countComputeEffect = (count:{value: number}, sendCommodity: any, commodity: any) => {
-  const common = (count:{value: number}) => {
-    const msg = sendCommodity(commodity)
-    msg.number = count.value
-    mystore.commit('addCartList', msg)
-  }
-
-  const minus = () => {
-    if (count.value > 0) {
-      count.value--
-    }
-    common(count)
-  }
-  const plus = () => {
-    if (count.value <= 99) {
-      count.value++
-    }
-    common(count)
-  }
-
-  return { minus, plus }
-}
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'shopInduction',
-  props: ['itemInduction'],
+  props: ['itemIntro'],
   setup (props) {
-    const count = ref(0)
-    const commodity = ref(props.itemInduction)
-    const { minus, plus } = countComputeEffect(count, sendCommodity, commodity)
-    return { count, minus, plus }
+    const cartList = mystore.state.cartList
+    const route = useRoute()
+    const shopId = route.params.id
+    // 更改购物车
+    const changeCartProductNum = (num: number) => {
+      const { productId, productName, price, imgUrl } = toRefs(props.itemIntro)
+      mystore.commit('changeCartProductNum', {
+        shopId: shopId,
+        productId: productId.value,
+        productName: productName.value,
+        price: price.value,
+        imgUrl: imgUrl.value,
+        num: num
+      })
+    }
+    return { cartList, shopId, changeCartProductNum }
   }
 })
 </script>

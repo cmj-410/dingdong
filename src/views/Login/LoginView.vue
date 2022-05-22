@@ -3,10 +3,10 @@
     <img src="../../assets/login.png" class="loginfig">
     <div class="wrapper">
       <div>
-        <input  v-model="account" id="account"><label for="account">账号：</label>
+        <input  v-model="account" id="account" required><label for="account">账号：</label>
       </div>
       <div>
-        <input type="password" v-model="password" id="password"><label for="password">密码：</label>
+        <input type="password" v-model="password" id="password" required><label for="password">密码：</label>
       </div>
       <div>
         <button @click="clickLogin">登录</button>
@@ -69,7 +69,7 @@ export default defineComponent({
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: lightgray;
+    background: linear-gradient(lightgray, rgb(217, 244, 158));
     .loginfig{
       width: 0.8rem;
       height: 0.8rem;
@@ -93,14 +93,14 @@ export default defineComponent({
         width: 2rem;
         height: 0.4rem;
         line-height: 0.3rem;
-        padding: 0 0.1rem;
         box-sizing: border-box;
         outline: none;
         border: none;
         border-bottom: 1px solid;
         background: transparent;
       }
-      input:focus ~ label{
+      input:focus ~ label,
+      input:valid ~ label{
           bottom: 0.2rem;
           color: rgb(57, 194, 240);
           font-size: 0.12rem;

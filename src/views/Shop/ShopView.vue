@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="header">
-        <button>后退</button>
+        <button @click="backUrl">后退</button>
         <button>...</button>
     </div>
     <div class="shopIntro">
@@ -30,7 +30,9 @@
 
 <script lang="ts">
 import { myget } from '@/request'
+import router from '@/router'
 import { defineComponent, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import homeShop from '../Home/HomeShopView.vue'
 import shopTotalInduction from './ShopTotalInductionView.vue'
 import shopViewCart from './ShopViewCartView.vue'
@@ -42,7 +44,9 @@ const getShopInfoEffect = () => {
   const shopMenu = ref([])
   async function getShopInfo () {
     try {
-      const response = await myget('/shop/1')
+      const route = useRoute()
+      // 根据url中携带的店铺id获取相应的信息
+      const response = await myget(`/shop/${route.params.id}`)
       if (response.ok) {
         const res = await response.json()
         if (res.errno === 0) {
@@ -70,12 +74,16 @@ export default defineComponent({
     const chooseMenu = (ind: number) => {
       selectedOrder.value = ind
     }
+    const backUrl = () => {
+      router.back()
+    }
     return {
       shopInfor,
       shopMenu,
       shopProInfo,
       selectedOrder,
-      chooseMenu
+      chooseMenu,
+      backUrl
     }
   }
 })

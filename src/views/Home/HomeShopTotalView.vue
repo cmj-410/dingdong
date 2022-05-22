@@ -39,7 +39,6 @@ export default defineComponent({
   components: { homeShop },
   setup () {
     const { homeInfo } = getHomeInfoEffect()
-    console.log(homeInfo)
     return { homeInfo }
   }
 })

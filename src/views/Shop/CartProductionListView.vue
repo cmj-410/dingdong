@@ -1,26 +1,41 @@
 <template>
   <div class="wrapper">
-    <img :src="imgUrl" class="leftImg">
-    <div class="content">{{productName}} --- {{price}}</div>
+    <img :src="msg.imgUrl" class="leftImg">
+    <div class="content">{{msg.productName}} --- {{msg.price}}</div>
     <div class="rightPart">
       <div>
-        <button>-</button>
-        <span>{{number}}</span>
-        <button>+</button>
+        <button @click = "changeCartProductNum(-1)">-</button>
+        <span>{{msg.number}}</span>
+        <button @click = "changeCartProductNum(1)">+</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import mystore from '@/store'
 import { defineComponent, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'cartProductionList',
   props: ['msg'],
   setup (props) {
-    const { productName, price, imgUrl, number } = toRefs(props.msg)
-    return { productName, price, imgUrl, number }
+    const route = useRoute()
+    const shopId = route.params.id
+    // 更改购物车
+    const changeCartProductNum = (num: number) => {
+      const { productId, productName, price, imgUrl } = toRefs(props.msg)
+      mystore.commit('changeCartProductNum', {
+        shopId: shopId,
+        productId: productId.value,
+        productName: productName.value,
+        price: price.value,
+        imgUrl: imgUrl.value,
+        num: num
+      })
+    }
+    return { changeCartProductNum }
   }
 })
 </script>
