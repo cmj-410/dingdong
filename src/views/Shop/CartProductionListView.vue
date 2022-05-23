@@ -1,7 +1,10 @@
 <template>
   <div class="wrapper">
     <img :src="msg.imgUrl" class="leftImg">
-    <div class="content">{{msg.productName}} --- {{msg.price}}</div>
+    <div class="content">
+      <div>{{msg.productName}}</div>
+      <span class="content__price">￥{{msg.price}}</span>
+    </div>
     <div class="rightPart">
       <div>
         <button @click = "changeCartProductNum(-1)">-</button>
@@ -13,28 +16,15 @@
 </template>
 
 <script lang="ts">
-import mystore from '@/store'
-import { defineComponent, toRefs } from 'vue'
-import { useRoute } from 'vue-router'
+import { effectChangeCartProductNum } from '@/utils'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'cartProductionList',
-  props: ['msg'],
+  props: ['msg', 'shopInfor'],
   setup (props) {
-    const route = useRoute()
-    const shopId = route.params.id
-    // 更改购物车
-    const changeCartProductNum = (num: number) => {
-      const { productId, productName, price, imgUrl } = toRefs(props.msg)
-      mystore.commit('changeCartProductNum', {
-        shopId: shopId,
-        productId: productId.value,
-        productName: productName.value,
-        price: price.value,
-        imgUrl: imgUrl.value,
-        num: num
-      })
-    }
+    // 更改购物车中商品信息和数量
+    const changeCartProductNum = effectChangeCartProductNum(props.msg, props.shopInfor)
     return { changeCartProductNum }
   }
 })
@@ -53,6 +43,14 @@ export default defineComponent({
   }
   .content{
     flex: 1;
+    position: relative;
+    padding: 0 0.05rem;
+    &__price{
+      color: red;
+      font-size: 0.14rem;
+      position: absolute;
+      bottom: 0;
+    }
   }
   .rightPart{
     width: 0.6rem;

@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <div :class="{mengCeng: !ishidden}" @click="changeOpen()"></div>
     <div class="orderList" :hidden = 'ishidden'>
       <div class="topbar"></div>
       <div class="aboveList">
@@ -8,19 +9,20 @@
       </div>
       <template v-for="(item, key) of curCartList" :key="key">
         <template v-if="item.number > 0">
-          <cartProductionList :msg = 'item'/>
+          <cartProductionList :msg = 'item' :shopInfor = 'shopInfor'/>
         </template>
       </template>
     </div>
     <div class="footerContent" @click="changeOpen()" >
       <img src="../../assets/cart.png"><span class="count">{{sumNumber}}</span>
-      <span>￥{{sumCost}}</span>
-      <button>去结算</button>
+      <span class="sumPrice">￥{{sumCost}}</span>
+      <button @click="gotoOrder()">去结算</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import router from '@/router'
 import mystore from '@/store'
 import { computed, defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -29,6 +31,7 @@ import cartProductionList from './CartProductionListView.vue'
 export default defineComponent({
   name: 'shopViewCart',
   components: { cartProductionList },
+  props: ['shopInfor'],
   setup () {
     const ishidden = ref(true)
     const route = useRoute()
@@ -58,13 +61,18 @@ export default defineComponent({
     const clearAll = () => {
       mystore.commit('clearShopCart', { shopId })
     }
+    // 前往订单确认页面
+    const gotoOrder = () => {
+      router.push({ path: '/orderConfirm' })
+    }
     return {
       ishidden,
       curCartList,
       sumNumber,
       sumCost,
       changeOpen,
-      clearAll
+      clearAll,
+      gotoOrder
     }
   }
 })
@@ -73,27 +81,44 @@ export default defineComponent({
 <style lang="scss" scoped>
 .wrapper{
   background: white;
+  position: relative;
+  .mengCeng{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+  }
   .orderList{
+    position: relative;
+    z-index: 2;
     .topbar{
       height: 0.16rem;
-      border-radius: 0.12rem 0.12rem 0 0;
       background: rgb(245, 245, 139);
     }
     .aboveList{
       display: flex;
       justify-content: space-between;
       padding: 0 0.03rem;
+      background: white;
     }
   }
  .footerContent{
     position: relative;
     height: 0.4rem;
+    z-index: 2;
+    background: white;
     img{
       width: 0.3rem;
       height: 0.3rem;
       position: relative;
       top: 0.05rem;
       left: 0.05rem;
+    }
+    .sumPrice{
+      font-size: 0.16rem;
     }
     .count{
       display: inline-block;

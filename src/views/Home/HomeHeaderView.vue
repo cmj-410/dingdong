@@ -6,18 +6,9 @@
     </div>
     <img src="@/assets/banner.png" alt="banner">
     <div class="homeitems">
-      <div class="homeitems__item">1</div>
-      <div class="homeitems__item">2</div>
-      <div class="homeitems__item">3</div>
-      <div class="homeitems__item">4</div>
-      <div class="homeitems__item">5</div>
-      <div class="homeitems__item">6</div>
-      <div class="homeitems__item">7</div>
-      <div class="homeitems__item">8</div>
-      <div class="homeitems__item">5</div>
-      <div class="homeitems__item">6</div>
-      <div class="homeitems__item">7</div>
-      <div class="homeitems__item">8</div>
+      <div v-for="(item, ind) of 12" :key="item" class="homeitems__item">
+        {{ind}}
+      </div>
     </div>
   </div>
 </template>

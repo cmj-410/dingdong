@@ -27,16 +27,20 @@ import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'shopInduction',
-  props: ['itemIntro'],
+  props: ['itemIntro', 'shopInfor'],
   setup (props) {
     const cartList = mystore.state.cartList
     const route = useRoute()
     const shopId = route.params.id
-    // 更改购物车
+    // 这里没有使用utils中的函数.因为,如果是返回一个函数,
+    // 就形成了闭包,mystore.commit其依赖的props.itemIntro中的属性不会更新
+    // 而是使用之前的属性值,因此切换菜单项后,+1/-1仍对应着第一个菜单项的页面内容
     const changeCartProductNum = (num: number) => {
       const { productId, productName, price, imgUrl } = toRefs(props.itemIntro)
+      const { name } = toRefs(props.shopInfor)
       mystore.commit('changeCartProductNum', {
         shopId: shopId,
+        name: name.value,
         productId: productId.value,
         productName: productName.value,
         price: price.value,
@@ -44,6 +48,7 @@ export default defineComponent({
         num: num
       })
     }
+
     return { cartList, shopId, changeCartProductNum }
   }
 })

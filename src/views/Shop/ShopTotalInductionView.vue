@@ -1,8 +1,11 @@
 <template>
   <div class="wrapper">
-    <template v-for="item of productIntro" :key="item.id">
-      <shopInduction :itemIntro = "item"/>
-    </template>
+    <router-link v-for="item of productIntro"
+      :key="item.id"
+      :to="`#`"
+    >
+      <shopInduction :itemIntro = "item" :shopInfor = 'shopInfor'/>
+    </router-link>
   </div>
 </template>
 
@@ -13,7 +16,7 @@ import shopInduction from './ShopInductionView.vue'
 export default defineComponent({
   name: 'shopTotalInduction',
   components: { shopInduction },
-  props: ['productIntro']
+  props: ['productIntro', 'shopInfor']
   // setup (prpos) {
   // }
 })

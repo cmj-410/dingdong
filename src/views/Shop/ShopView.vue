@@ -18,11 +18,12 @@
         </template>
       </div>
       <div class="productInfo">
-        <shopTotalInduction :productIntro = 'shopProInfo[selectedOrder]' />
+        <shopTotalInduction :productIntro = 'shopProInfo[selectedOrder]'
+        :shopInfor = 'shopInfor' />
       </div>
     </div>
     <div class="bottom_settlemet">
-      <shopViewCart/>
+      <shopViewCart :shopInfor = 'shopInfor'/>
     </div>
     <br/><br/><br/>
   </div>
