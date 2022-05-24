@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 
 const mystore = createStore({
   state: {
+    curAddress: '选择地址',
     cartList: {} as IcartList,
     sumList: {} as IsumCountList,
     countList: {} as IsumCountList
@@ -10,6 +11,10 @@ const mystore = createStore({
   getters: {
   },
   mutations: {
+    // 改变当前地址
+    changeAddress (state, payload) {
+      state.curAddress = payload
+    },
     // 改变购物车数据，增添描述以及（数量+1/-1）
     changeCartProductNum (state, payload: IcartProductInfo) {
       const { shopId, name, productId, productName, price, imgUrl, num } = payload
@@ -49,6 +54,7 @@ const mystore = createStore({
       }
       state.countList[shopId] = count
       state.sumList[shopId] = sum
+      // console.log(state.sumList)
     },
     // 清空某商店的购物车
     clearShopCart (state, payload: { shopId: string}) {

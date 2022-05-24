@@ -1,33 +1,50 @@
 <template>
   <div class="footer">
-    <div class="item">首页</div>
-    <div class="item">真香</div>
-    <div class="item">订单</div>
-    <div class="item">我的</div>
+    <div class="item" @click="toHome()">
+      <i class="iconfont">&#xe759;</i><span>首页</span>
+    </div>
+    <div class="item">
+      <i class="iconfont">&#xe756;</i><span>真香</span>
+    </div>
+    <div class="item">
+      <i class="iconfont">&#xe76c;</i><span>订单</span>
+    </div>
+    <div class="item" @click="toMy()">
+      <i class="iconfont">&#xe76f;</i><span>我的</span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import router from '@/router'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'footerView'
-  // setup() {
-
-  // },
+  name: 'footerView',
+  setup () {
+    const toHome = () => {
+      router.push('/')
+    }
+    const toMy = () => {
+      router.push('/person')
+    }
+    return { toHome, toMy }
+  }
 })
 </script>
 
 <style lang="scss" scoped>
   .footer{
     height: 0.4rem;
-    line-height: 0.4rem;
+    padding-top: 0.05rem;
     width: 100%;
     display: flex;
     background: lightgray;
     text-align: center;
     .item{
       flex: 1;
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>

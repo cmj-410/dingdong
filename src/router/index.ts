@@ -20,7 +20,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/orderConfirm',
     name: 'orderConfirm',
-    component: () => import(/* webpackChunkName: "orderConfirm" */ '../views/orderConfirm/orderConfirmView.vue')
+    component: () => import(/* webpackChunkName: "orderConfirm" */ '../views/OrderConfirm/OrderConfirmView.vue')
+  },
+  {
+    path: '/person',
+    name: 'person',
+    component: () => import(/* webpackChunkName: "person" */ '../views/Person/PersonView.vue')
+  },
+  {
+    path: '/address',
+    name: 'address',
+    component: () => import(/* webpackChunkName: "address" */ '../views/Address/AddressView.vue')
+  },
+  {
+    path: '/newAddress',
+    name: 'newAddress',
+    component: () => import(/* webpackChunkName: "newAddress" */ '../views/Address/NewAddress.vue')
   }
 ]
 

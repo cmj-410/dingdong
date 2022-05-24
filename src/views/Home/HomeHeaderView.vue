@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    <div class="topline"><span id="address">某地址</span></div>
+    <div class="topline"><i class="iconfont">&#xe76a;</i>
+      <router-link to="/address"><span id="address">{{curAddress}}</span></router-link>
+    </div>
     <div class="inputfind">
       <input type="text" placeholder="输入内容"><button>搜索</button>
     </div>
@@ -14,12 +16,15 @@
 </template>
 
 <script lang="ts">
+import mystore from '@/store'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'homeHeader'
-  // setup() {
-  // },
+  name: 'homeHeader',
+  setup () {
+    const curAddress = mystore.state.curAddress
+    return { curAddress }
+  }
 })
 </script>
 
@@ -29,6 +34,10 @@ export default defineComponent({
     text-align: center;
     font-size: 0.16rem;
     margin-bottom: 0.1rem;
+    a{
+      text-decoration: none;
+      color: black;
+    }
     #address::after{
       content: '';
       display: inline-block;
@@ -53,6 +62,7 @@ export default defineComponent({
       box-sizing: border-box;
       margin-bottom: 0.1rem;
       margin-right: 0.02rem;
+      outline: none;
     }
     button{
       background: lightblue;

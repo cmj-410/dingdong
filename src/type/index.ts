@@ -3,6 +3,11 @@ export interface Iloginres{
   errno: number
   message: string
   token: string
+  account: {
+    userName: string,
+    phone: number,
+    address: string[]
+  }
 }
 // 提交vuex前通过props拿到的商品描述信息
 export interface IcartProInfo{

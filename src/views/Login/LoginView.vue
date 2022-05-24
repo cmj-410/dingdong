@@ -44,7 +44,9 @@ export const loginEffect = (account: string, password: string) => {
   // 登录之后，存储token，记录登录状态，并请求首页信息
   function loginthen (res: Iloginres) {
     const token = res.token
+    const account = JSON.stringify(res.account)
     localStorage.setItem('token', token)
+    localStorage.setItem('account', account)
     // 有token后就可以跳转到首页，首页再发送请求获取页面信息
     router.push({ name: 'home' })
   }

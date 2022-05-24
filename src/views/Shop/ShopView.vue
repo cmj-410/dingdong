@@ -2,7 +2,10 @@
   <div class="wrapper">
     <div class="header">
         <button @click="backUrl">后退</button>
-        <button>...</button>
+        <div>
+          <i class="iconfont">&#xe76d;</i>
+          <button>...</button>
+        </div>
     </div>
     <div class="shopIntro">
       <homeShop :shopInfo = 'shopInfor'/>
@@ -103,6 +106,9 @@ export default defineComponent({
     background: #aaa;
     position: sticky;
     top: 0;
+    i{
+      font-size: 0.2rem;
+    }
     button{
       width: 0.4rem;
       background: #aaa;
