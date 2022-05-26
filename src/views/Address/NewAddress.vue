@@ -7,30 +7,31 @@
     <div class="address">
       <div>
         <span>地址</span>
-        <input type="text" placeholder="输入地址">
+        <input type="text" v-model="preAdd" placeholder="输入地址">
       </div>
       <div>
         <span>门牌号</span>
-        <input type="text" placeholder="具体地址（门牌号）">
+        <input type="text" v-model="afterAdd" placeholder="具体地址（门牌号）">
       </div>
     </div>
     <div class="person">
       <div>
         <span>收货人</span>
-        <input type="text" placeholder="姓名">
+        <input type="text" v-model="userName" placeholder="姓名">
       </div>
       <div>
         <span>手机号</span>
-        <input type="text" placeholder="输入手机号">
+        <input type="text" v-model="phone" placeholder="输入手机号">
       </div>
-      <button>保存</button>
+      <button @click="addAddress(preAdd, afterAdd, userName, phone)">保存</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { mypatch } from '@/request'
 import router from '@/router'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'newAddress',
@@ -38,7 +39,37 @@ export default defineComponent({
     const goBack = () => {
       router.back()
     }
-    return { goBack }
+    const preAdd = ref('')
+    const afterAdd = ref('')
+    const userName = ref('')
+    const phone = ref('')
+    const addAddress = async (xpreAdd: string, xafterAdd: string, xuserName: string, xphone: string) => {
+      const xaddress = xpreAdd + xafterAdd
+      const bodymsg = {
+        userName: xuserName,
+        phone: xphone,
+        address: xaddress
+      }
+      try {
+        const response = await mypatch('/address/info', bodymsg)
+        let res
+        if (response.ok) {
+          res = await response.json()
+          if (res.errno === 0) {
+            alert('添加成功')
+            preAdd.value = ''
+            afterAdd.value = ''
+            userName.value = ''
+            phone.value = ''
+          }
+        } else {
+          alert('服务器响应失败')
+        }
+      } catch {
+        alert('请求失败（检查网络）')
+      }
+    }
+    return { goBack, addAddress, preAdd, afterAdd, userName, phone }
   }
 })
 </script>

@@ -5,8 +5,7 @@ export interface Iloginres{
   token: string
   account: {
     userName: string,
-    phone: number,
-    address: string[]
+    phone: number
   }
 }
 // 提交vuex前通过props拿到的商品描述信息

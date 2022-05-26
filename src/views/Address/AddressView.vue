@@ -11,10 +11,10 @@
     <div class="bar"></div>
     <div class="addressList">
       <div class="title">收货地址</div>
-      <template v-for="address of personInfo.address" :key="address">
+      <template v-for="addItem of addressList" :key="addItem.userName">
         <div class="addressItem" @click="selectedCurAddress(address)">
-          <div><b>{{address}}</b></div>
-          <div>{{personInfo.userName}}   {{personInfo.phone}}</div>
+          <div><b>{{addItem.address}}</b></div>
+          <div>{{addItem.userName}}   {{addItem.phone}}</div>
         </div>
       </template>
     </div>
@@ -22,25 +22,45 @@
 </template>
 
 <script lang="ts">
+import { myget } from '@/request'
 import router from '@/router'
 import mystore from '@/store'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'addressView',
   setup () {
+    // 获取当前用户已有的地址信息
+    const addressList = ref([])
+    const getAddress = async () => {
+      try {
+        const response = await myget('/address/info')
+        if (response.ok) {
+          const res = await response.json()
+          if (res.errno === 0) {
+            addressList.value = res.data
+          } else {
+            alert('请求参数错误')
+          }
+        } else {
+          alert('服务器响应失败')
+        }
+      } catch {
+        alert('请求失败')
+      }
+    }
+    getAddress()
     const goHome = () => {
       router.push('/')
     }
     const goNewAddress = () => {
       router.push('/newAddress')
     }
-    const personInfo = JSON.parse(localStorage.getItem('account') as string)
     const selectedCurAddress = (address: string) => {
       mystore.commit('changeAddress', address)
       goHome()
     }
-    return { goHome, goNewAddress, personInfo, selectedCurAddress }
+    return { goHome, goNewAddress, addressList, selectedCurAddress }
   }
 })
 </script>

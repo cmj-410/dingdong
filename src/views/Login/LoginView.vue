@@ -9,7 +9,7 @@
         <input type="password" v-model="password" id="password" required><label for="password">密码：</label>
       </div>
       <div>
-        <button @click="clickLogin">登录</button>
+        <button @click="clickLogin(account, password)">登录</button>
       </div>
     </div>
   </div>
@@ -21,9 +21,9 @@ import { mypost } from '@/request'
 import { Iloginres } from '@/type'
 import router from '@/router'
 
-export const loginEffect = (account: string, password: string) => {
+export const loginEffect = () => {
   // 点击登录
-  async function clickLogin () {
+  async function clickLogin (account: string, password: string) {
     const bodymsg = { account, password }
     try {
       const response = await mypost('/user/login', bodymsg)
@@ -33,12 +33,16 @@ export const loginEffect = (account: string, password: string) => {
         if (res.errno === 0) {
           // 执行后续获取首页信息，以及跳转工作
           loginthen(res)
+        } else {
+          if (res.errno === 1) {
+            alert('账号或密码错误')
+          }
         }
       } else {
         alert('服务器响应失败')
       }
     } catch {
-      alert('请求失败')
+      alert('请求失败（检查网络）')
     }
   }
   // 登录之后，存储token，记录登录状态，并请求首页信息
@@ -58,7 +62,7 @@ export default defineComponent({
   setup () {
     const account = ref('')
     const password = ref('')
-    const { clickLogin } = loginEffect(account.value, password.value)
+    const { clickLogin } = loginEffect()
     return { account, password, clickLogin }
   }
 })
