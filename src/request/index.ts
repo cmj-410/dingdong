@@ -19,14 +19,15 @@ export async function myget (address: string) {
   return response
 }
 
-export async function mypatch (address: string, bodymsg: object) {
-  const url = baseurl + address
-  const response = await fetch(url, {
-    method: 'patch',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(bodymsg as BodyInit)
-  })
-  return response
-}
+// export async function mypatch (address: string, bodymsg: object) {
+//   const url = baseurl + address
+//   const response = await fetch(url, {
+//     method: 'patch',
+//     mode: 'no-cors',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(bodymsg as BodyInit)
+//   })
+//   return response
+// }

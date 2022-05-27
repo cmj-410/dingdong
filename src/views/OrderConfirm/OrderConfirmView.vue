@@ -4,55 +4,65 @@
       <button @click="urlBack()">后退</button>
       <span>确认订单</span>
     </div>
-    <div class="address">
-      <div class="address__content">
-        <div>
-          <b>{{personInfo.address[0]}}</b>
-          <span>&gt;</span>
+    <!-- 有订单的效果 -->
+    <template v-if="hasOrder">
+      <div class="address">
+        <div class="address__content" @click="gotoAddress()">
+          <div>
+            <b>{{curPersonAdd.address}}</b>
+            <span>&gt;</span>
+          </div>
+          <div>
+            {{curPersonAdd.userName}} {{curPersonAdd.phone}}
+          </div>
         </div>
-        <div>
-          {{personInfo.userName}} {{personInfo.phone}}
+        <div class="time">
+          <span>立即送出</span>
+          <span>大约{{purposeTime.curHour}}:{{purposeTime.curMinute}}到</span>
+        </div>
+        <div class="payWay">
+          <span>支付方式</span>
+          <span>支付宝</span>
         </div>
       </div>
-      <div class="time">
-        <span>立即送出</span>
-        <span>大约{{purposeTime.curHour}}:{{purposeTime.curMinute}}到</span>
-      </div>
-      <div class="payWay">
-        <span>支付方式</span>
-        <span>支付宝</span>
-      </div>
-    </div>
-    <template v-for="(shopItem, ind) of arrayCartList" :key="shopItem">
-      <div class="orderContent">
-        <div class="shopName">{{shopName[ind]}}</div>
-        <template v-for="productItem of shopItem" :key="productItem">
-          <div class="productItem">
-            <img :src="productItem.imgUrl">
-            <div class="content">
-              <div class="productName">{{productItem.productName}}</div>
-              <div class="number">&times;{{productItem.number}}</div>
+      <template v-for="(shopItem, ind) of arrayCartList" :key="shopItem">
+        <div class="orderContent">
+          <div class="shopName">{{shopName[ind]}}</div>
+          <template v-for="productItem of shopItem" :key="productItem">
+            <div class="productItem">
+              <img :src="productItem.imgUrl">
+              <div class="content">
+                <div class="productName">{{productItem.productName}}</div>
+                <div class="number">&times;{{productItem.number}}</div>
+              </div>
+              <span>
+                <b>￥{{productItem.price}}</b>
+              </span>
             </div>
-            <span>
-              <b>￥{{productItem.price}}</b>
-            </span>
-          </div>
-        </template>
-        <div class="shopSum">
-          <span>小计￥</span><b>{{shopCostList[shopId[ind]]}}</b>
-          </div>
+          </template>
+          <div class="shopSum">
+            <span>小计￥</span><b>{{shopCostList[shopId[ind]]}}</b>
+            </div>
+        </div>
+      </template>
+      <div class="otherInfo">
+        <div>
+          <span>备注</span>
+          <span>请填写口味偏好</span>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>合计￥</span><b>{{sumCost}}</b>
+        <button>提交订单</button>
       </div>
     </template>
-    <div class="otherInfo">
-      <div>
-        <span>备注</span>
-        <span>请填写口味偏好</span>
+    <!-- 没有订单的效果 -->
+    <template v-if="!hasOrder">
+      <div class="noOrder">
+        <h2>还没有任何订单哦</h2>
+        <h2>快去寻找好物下单吧</h2>
       </div>
-    </div>
-    <div class="bottom">
-      <span>合计￥</span><b>{{sumCost}}</b>
-      <button>提交订单</button>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -60,14 +70,23 @@
 import router from '@/router'
 import mystore from '@/store'
 import { IconfirmPro } from '@/type'
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'orderConfirm',
   setup () {
-    const ishidden = ref(true)
-    // 获取个人信息
-    const personInfo = JSON.parse(localStorage.getItem('account') as string)
+    const hasOrder = computed(() => {
+      let count = 0
+      for (const shopid in mystore.state.countList) {
+        const shopCount = mystore.state.countList[shopid]
+        count += shopCount
+      }
+      if (count > 0) {
+        return true
+      }
+      return false
+    })
+    const curPersonAdd = mystore.state.curPersonAdd
     const cartList = mystore.state.cartList
     // 获取当前时间
     const mydate = new Date()
@@ -120,16 +139,20 @@ export default defineComponent({
     const urlBack = () => {
       router.back()
     }
+    const gotoAddress = () => {
+      router.push({ name: 'address' })
+    }
     return {
-      ishidden,
-      personInfo,
+      hasOrder,
+      curPersonAdd,
       purposeTime,
       arrayCartList,
       shopName,
       shopId,
       sumCost,
       shopCostList,
-      urlBack
+      urlBack,
+      gotoAddress
     }
   }
 })
@@ -139,6 +162,7 @@ export default defineComponent({
   .wrapper{
     padding: 0.1rem 0.1rem;
     height: 100%;
+    box-sizing: border-box;
     background: linear-gradient(lightskyblue, lightgray);
     .top{
       text-align: center;
@@ -271,6 +295,13 @@ export default defineComponent({
         width: 0.8rem;
         height: 0.3rem;
       }
+    }
+    .noOrder{
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
     }
   }
 </style>

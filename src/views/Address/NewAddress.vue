@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { mypatch } from '@/request'
+import { mypost } from '@/request'
 import router from '@/router'
 import { defineComponent, ref } from 'vue'
 
@@ -51,17 +51,10 @@ export default defineComponent({
         address: xaddress
       }
       try {
-        const response = await mypatch('/address/info', bodymsg)
-        let res
+        const response = await mypost('/address/info', bodymsg)
         if (response.ok) {
-          res = await response.json()
-          if (res.errno === 0) {
-            alert('添加成功')
-            preAdd.value = ''
-            afterAdd.value = ''
-            userName.value = ''
-            phone.value = ''
-          }
+          alert('添加成功')
+          router.push('/address')
         } else {
           alert('服务器响应失败')
         }

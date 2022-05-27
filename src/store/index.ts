@@ -1,9 +1,9 @@
-import { IcartList, IcartProductInfo, IsumCountList } from '@/type'
+import { IcartList, IcartProductInfo, IpersonAdd, IsumCountList } from '@/type'
 import { createStore } from 'vuex'
 
 const mystore = createStore({
   state: {
-    curAddress: '选择地址',
+    curPersonAdd: { address: '点击选择地址' } as IpersonAdd,
     cartList: {} as IcartList,
     sumList: {} as IsumCountList,
     countList: {} as IsumCountList
@@ -12,8 +12,8 @@ const mystore = createStore({
   },
   mutations: {
     // 改变当前地址
-    changeAddress (state, payload) {
-      state.curAddress = payload
+    changePersonAdd (state, payload) {
+      state.curPersonAdd = payload
     },
     // 改变购物车数据，增添描述以及（数量+1/-1）
     changeCartProductNum (state, payload: IcartProductInfo) {

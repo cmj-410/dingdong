@@ -7,7 +7,7 @@
       <i class="iconfont">&#xe756;</i><span>真香</span>
     </div>
     <div class="item">
-      <i class="iconfont">&#xe76c;</i><span>订单</span>
+      <i class="iconfont" @click="toOrder()">&#xe76c;</i><span>订单</span>
     </div>
     <div class="item" @click="toMy()">
       <i class="iconfont">&#xe76f;</i><span>我的</span>
@@ -28,7 +28,10 @@ export default defineComponent({
     const toMy = () => {
       router.push('/person')
     }
-    return { toHome, toMy }
+    const toOrder = () => {
+      router.push('/orderConfirm')
+    }
+    return { toHome, toMy, toOrder }
   }
 })
 </script>

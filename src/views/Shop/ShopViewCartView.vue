@@ -17,7 +17,7 @@
       <img src="../../assets/cart.png">
       <span class="count">{{sumNumber}}</span>
       <span class="sumPrice">￥{{sumCost}}</span>
-      <button @click="gotoOrder()">去结算</button>
+      <button @click.stop="gotoOrder()">去结算</button>
     </div>
   </div>
 </template>
@@ -64,8 +64,9 @@ export default defineComponent({
     }
     // 前往订单确认页面
     const gotoOrder = () => {
+      console.log(sumNumber.value)
       if (sumNumber.value > 0) {
-        router.push({ path: '/orderConfirm' })
+        router.push({ name: 'orderConfirm' })
       }
     }
     return {

@@ -22,7 +22,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'homeHeader',
   setup () {
-    const curAddress = mystore.state.curAddress
+    const curAddress = mystore.state.curPersonAdd.address
     return { curAddress }
   }
 })

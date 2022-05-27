@@ -57,3 +57,9 @@ export interface IconfirmPro{
   imgUrl: string,
   number: number,
 }
+
+export interface IpersonAdd{
+  userName: string,
+  phone: string,
+  address: string
+}

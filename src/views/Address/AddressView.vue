@@ -12,7 +12,7 @@
     <div class="addressList">
       <div class="title">收货地址</div>
       <template v-for="addItem of addressList" :key="addItem.userName">
-        <div class="addressItem" @click="selectedCurAddress(address)">
+        <div class="addressItem" @click="selectedCurAddress(addItem)">
           <div><b>{{addItem.address}}</b></div>
           <div>{{addItem.userName}}   {{addItem.phone}}</div>
         </div>
@@ -25,6 +25,8 @@
 import { myget } from '@/request'
 import router from '@/router'
 import mystore from '@/store'
+// import mystore from '@/store'
+import { IpersonAdd } from '@/type'
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
@@ -56,9 +58,9 @@ export default defineComponent({
     const goNewAddress = () => {
       router.push('/newAddress')
     }
-    const selectedCurAddress = (address: string) => {
-      mystore.commit('changeAddress', address)
-      goHome()
+    const selectedCurAddress = (addItem: IpersonAdd) => {
+      mystore.commit('changePersonAdd', addItem)
+      router.back()
     }
     return { goHome, goNewAddress, addressList, selectedCurAddress }
   }
