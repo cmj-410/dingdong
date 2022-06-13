@@ -9,16 +9,16 @@
       <div class="address">
         <div class="address__content" @click="gotoAddress()">
           <div>
-            <b>{{curPersonAdd.address}}</b>
+            <b>{{ curPersonAdd.address }}</b>
             <span>&gt;</span>
           </div>
-          <div>
-            {{curPersonAdd.userName}} {{curPersonAdd.phone}}
-          </div>
+          <div>{{ curPersonAdd.userName }} {{ curPersonAdd.phone }}</div>
         </div>
         <div class="time">
           <span>立即送出</span>
-          <span>大约{{purposeTime.curHour}}:{{purposeTime.curMinute}}到</span>
+          <span
+            >大约{{ purposeTime.curHour }}:{{ purposeTime.curMinute }}到</span
+          >
         </div>
         <div class="payWay">
           <span>支付方式</span>
@@ -27,22 +27,22 @@
       </div>
       <template v-for="(shopItem, ind) of arrayCartList" :key="shopItem">
         <div class="orderContent">
-          <div class="shopName">{{shopName[ind]}}</div>
+          <div class="shopName">{{ shopName[ind] }}</div>
           <template v-for="productItem of shopItem" :key="productItem">
             <div class="productItem">
-              <img :src="productItem.imgUrl">
+              <img :src="productItem.imgUrl" />
               <div class="content">
-                <div class="productName">{{productItem.productName}}</div>
-                <div class="number">&times;{{productItem.number}}</div>
+                <div class="productName">{{ productItem.productName }}</div>
+                <div class="number">&times;{{ productItem.number }}</div>
               </div>
               <span>
-                <b>￥{{productItem.price}}</b>
+                <b>￥{{ productItem.price }}</b>
               </span>
             </div>
           </template>
           <div class="shopSum">
-            <span>小计￥</span><b>{{shopCostList[shopId[ind]]}}</b>
-            </div>
+            <span>小计￥</span><b>{{ shopCostList[shopId[ind]] }}</b>
+          </div>
         </div>
       </template>
       <div class="otherInfo">
@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="bottom">
-        <span>合计￥</span><b>{{sumCost}}</b>
+        <span>合计￥</span><b>{{ sumCost }}</b>
         <button>提交订单</button>
       </div>
     </template>
@@ -74,7 +74,7 @@ import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'orderConfirm',
-  setup () {
+  setup() {
     const hasOrder = computed(() => {
       let count = 0
       for (const shopid in mystore.state.countList) {
@@ -159,149 +159,179 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-  .wrapper{
-    padding: 0.1rem 0.1rem;
-    height: 100%;
-    box-sizing: border-box;
-    background: linear-gradient(lightskyblue, lightgray);
-    .top{
-      text-align: center;
-      margin-bottom: 0.1rem;
-      button{
-        position: absolute;
-        left: 0.05rem;
-        border: none;
-        background: transparent;
-      }
-      span{
-        font-size: 0.16rem;
-      }
+.wrapper {
+  padding: 0.1rem 0.1rem;
+  height: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(lightskyblue, lightgray);
+
+  .top {
+    text-align: center;
+    margin-bottom: 0.1rem;
+
+    button {
+      position: absolute;
+      left: 0.05rem;
+      border: none;
+      background: transparent;
     }
-    .address{
-      background: white;
-      border-radius: 0.05rem;
-      padding: 0.05rem;
-      margin-bottom: 0.05rem;
-      &__content{
-        margin-bottom: 0.12rem;
-        div:first-child{
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.18rem;
-          margin-bottom: 0.1rem;
-        }
-        div:last-child{
-          color: gray;
-        }
-      }
-      .time,.payWay{
+
+    span {
+      font-size: 0.16rem;
+    }
+  }
+
+  .address {
+    background: white;
+    border-radius: 0.05rem;
+    padding: 0.05rem;
+    margin-bottom: 0.05rem;
+
+    &__content {
+      margin-bottom: 0.12rem;
+
+      div:first-child {
         display: flex;
         justify-content: space-between;
-        line-height: 0.2rem;
-        span:last-child{
-          color: lightskyblue;
-          &::after{
-            content: '>';
-            color: black;
-            display: inline-block;
-            padding-left: 0.05rem;
-          }
-        }
+        font-size: 0.18rem;
+        margin-bottom: 0.1rem;
       }
-    }
-    .orderContent{
-      background: white;
-      border-radius: 0.05rem;
-      padding: 0.05rem;
-      margin-bottom: 0.05rem;
-      .shopName{
-        font: 0.14rem;
+
+      div:last-child {
         color: gray;
-        padding: 0.03rem 0;
-        line-height: 0.2rem;
       }
-      .productItem{
-        display: flex;
-        margin-bottom: 0.03rem;
-        img{
+    }
+
+    .time,
+    .payWay {
+      display: flex;
+      justify-content: space-between;
+      line-height: 0.2rem;
+
+      span:last-child {
+        color: lightskyblue;
+
+        &::after {
+          content: '>';
+          color: black;
           display: inline-block;
-          width: 0.4rem;
-          height: 0.4rem;
-        }
-        .content{
-          flex: 1;
-          padding: 0 0.03rem;
-          .productName{
-            font-size: 0.14rem;
-            margin-bottom: 0.06rem;
-          }
-          .number{
-            color: gray;
-          }
-        }
-        .span,b{
-          line-height: 0.4rem;
-        }
-      }
-      .shopSum{
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        b{
-          font-size: 0.18rem;
+          padding-left: 0.05rem;
         }
       }
     }
-    .otherInfo{
-      background: white;
-      border-radius: 0.05rem;
-      padding: 0.05rem;
-      margin-bottom: 0.05rem;
-      div{
-        display: flex;
-        justify-content: space-between;
-        line-height: 0.2rem;
-        span:last-child{
+  }
+
+  .orderContent {
+    background: white;
+    border-radius: 0.05rem;
+    padding: 0.05rem;
+    margin-bottom: 0.05rem;
+
+    .shopName {
+      font: 0.14rem;
+      color: gray;
+      padding: 0.03rem 0;
+      line-height: 0.2rem;
+    }
+
+    .productItem {
+      display: flex;
+      margin-bottom: 0.03rem;
+
+      img {
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.4rem;
+      }
+
+      .content {
+        flex: 1;
+        padding: 0 0.03rem;
+
+        .productName {
+          font-size: 0.14rem;
+          margin-bottom: 0.06rem;
+        }
+
+        .number {
           color: gray;
-          &::after{
-            content: '>';
-            color: black;
-            display: inline-block;
-            padding-left: 0.05rem;
-          }
         }
       }
+
+      .span,
+      b {
+        line-height: 0.4rem;
+      }
     }
-    .bottom{
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 0.3rem;
-      padding: 0.05rem 0.1rem;
-      background: white;
+
+    .shopSum {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      b{
+
+      b {
         font-size: 0.18rem;
       }
-      button{
-        background: lightskyblue;
-        color: white;
-        border-radius: 0.3rem;
-        margin-left: 0.1rem;
-        border: none;
-        width: 0.8rem;
-        height: 0.3rem;
-      }
-    }
-    .noOrder{
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
     }
   }
+
+  .otherInfo {
+    background: white;
+    border-radius: 0.05rem;
+    padding: 0.05rem;
+    margin-bottom: 0.05rem;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      line-height: 0.2rem;
+
+      span:last-child {
+        color: gray;
+
+        &::after {
+          content: '>';
+          color: black;
+          display: inline-block;
+          padding-left: 0.05rem;
+        }
+      }
+    }
+  }
+
+  .bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.3rem;
+    padding: 0.05rem 0.1rem;
+    background: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    b {
+      font-size: 0.18rem;
+    }
+
+    button {
+      background: lightskyblue;
+      color: white;
+      border-radius: 0.3rem;
+      margin-left: 0.1rem;
+      border: none;
+      width: 0.8rem;
+      height: 0.3rem;
+    }
+  }
+
+  .noOrder {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+}
 </style>
